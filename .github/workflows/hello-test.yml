@@ -1,0 +1,14 @@
+name: Hello Test
+on:
+  push:
+    branches:
+      - main
+      - test
+
+jobs:
+  hello_job:
+    runs-on: ubuntu-latest
+    env: ${{ github.ref_name }}
+    steps:
+      - name: hello
+        run: echo ${{ env.HELLO }}
