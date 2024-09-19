@@ -8,7 +8,7 @@ on:
 jobs:
   hello_job:
     runs-on: ubuntu-latest
-    environment: ${{ github.ref_name }}
+    environment: ${{ github.ref_name == 'main' && 'dev' || 'test' }}
     steps:
       - name: hello
         run: echo ${{ vars.HELLO }}
