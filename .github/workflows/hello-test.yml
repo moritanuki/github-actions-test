@@ -13,7 +13,7 @@ jobs:
     environment: ${{ env.ENVIRONMENT }}
     steps:
       - name: Set up .env
-        run: cp .env.${{ env.ENVIRONMENT }} .env
+        run: cp .env.$ENVIRONMENT .env
       - name: Show .env
         run: cat .env
       - name: Hello
