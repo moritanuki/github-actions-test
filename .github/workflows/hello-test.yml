@@ -8,12 +8,10 @@ on:
 jobs:
   hello_job:
     runs-on: ubuntu-latest
-    env:
-      ENVIRONMENT: ${{ github.ref_name == 'main' && 'dev' || github.ref_name }}
-    environment: ${{ env.ENVIRONMENT }}
+    environment: ${{ github.ref_name == 'main' && 'dev' || github.ref_name }}
     steps:
       - name: Set up .env
-        run: cp .env.$ENVIRONMENT .env
+        run: cp .env.${{ github.ref_name == 'main' && 'dev' || github.ref_name }} .env
       - name: Show .env
         run: cat .env
       - name: Hello
