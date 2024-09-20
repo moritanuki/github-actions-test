@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ github.ref_name == 'main' && 'dev' || github.ref_name }}
     steps:
+      # ファイルをリポジトリからチェックアウト
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Set up .env
         run: cp .env.${{ github.ref_name == 'main' && 'dev' || github.ref_name }} .env
       - name: Show .env
