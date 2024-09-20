@@ -10,5 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ github.ref_name == 'main' && 'dev' || github.ref_name }}
     steps:
-      - name: hello
-        run: echo ${{ vars.HELLO }}
+      - name: Set up .env
+        run: cp .env.${{ env.environment }} .env
+      - name: Hello
+        run: cat .env
