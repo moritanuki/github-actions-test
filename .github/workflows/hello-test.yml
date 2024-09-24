@@ -1,9 +1,9 @@
 name: Hello Test
 on:
-  # push:
-  #   branches:
-  #     - main
-  #     - test
+  push:
+    branches:
+      - main
+      - test
 
   # 手動承認トリガーを使用
   workflow_dispatch:
