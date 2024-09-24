@@ -31,7 +31,7 @@ jobs:
   approve-production-deploy:
       if: github.ref_name == 'main'
       runs-on: ubuntu-latest
-      needs: build-and-deploy
+      needs: hello_job
       steps:
       - name: 承認をリクエスト
         run: echo "手動承認が必要です。"
