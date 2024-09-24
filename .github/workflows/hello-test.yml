@@ -1,22 +1,12 @@
 name: Hello Test
 on:
-  # push:
-  #   branches:
-  #     - main
-  #     - test
+  push:
+    branches:
+      - test
 
   # 手動承認トリガーを使用
   workflow_dispatch:
     inputs:
-      # デプロイ先選択
-      deployment_target:
-        description: 'Deployment target'
-        required: true
-        default: 'dev'
-        type: choice
-        options:
-          - dev
-          - test
       approve:
         description: 'Deploy to production'
         required: true
@@ -26,7 +16,7 @@ jobs:
   hello_job:
     runs-on: ubuntu-latest
     environment: ${{ github.ref_name == 'main' && 'dev' || github.ref_name }}
-    needs: [approve-production-deploy, deploy-production]
+    needs: [approve-deploy]
     steps:
       # ファイルをリポジトリからチェックアウト
       - name: Checkout
@@ -38,17 +28,9 @@ jobs:
       - name: Hello
         run: echo ${{ vars.HELLO }}
 
-  approve-production-deploy:
-      if: github.ref_name == 'main'
-      runs-on: ubuntu-latest
-      steps:
-      - name: 承認をリクエスト
-        run: echo "手動承認が必要です。"
-
-  deploy-production:
-    if: github.event.inputs.approve == 'yes' && github.ref_name == 'main'
+  approve-deploy:
+    if: (github.event.inputs.approve == 'yes' && github.ref_name == 'main') || github.ref_name == 'test'
     runs-on: ubuntu-latest
-    needs: [approve-production-deploy]
     steps:
-    - name: 本番環境にデプロイ
-      run: echo "本番環境にデプロイしています"
+    - name: デプロイ
+      run: echo "${{ github.ref_name == 'main' && 'dev' || github.ref_name }}環境にデプロイしています"
