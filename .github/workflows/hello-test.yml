@@ -1,22 +1,12 @@
 name: Hello Test
 on:
-  # push:
-  #   branches:
-  #     - main
-  #     - test
+  push:
+    branches:
+      - test
 
   # 手動承認トリガーを使用
   workflow_dispatch:
     inputs:
-      # デプロイ先選択
-      deployment_target:
-        description: 'Deployment target'
-        required: true
-        default: 'dev'
-        type: choice
-        options:
-          - dev
-          - test
       approve:
         description: 'Deploy to production'
         required: true
