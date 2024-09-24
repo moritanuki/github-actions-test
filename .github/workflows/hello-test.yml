@@ -28,7 +28,7 @@ jobs:
       - name: Hello
         run: echo ${{ vars.HELLO }}
 
-  deploy-production:
+  approve-deploy:
     if: (github.event.inputs.approve == 'yes' && github.ref_name == 'main') || github.ref_name == 'test'
     runs-on: ubuntu-latest
     steps:
