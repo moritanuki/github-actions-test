@@ -1,4 +1,4 @@
-name: Hello Test
+name: ${{ github.ref_name == 'main' && 'dev' || github.ref_name }} Test
 on:
   push:
     branches:
