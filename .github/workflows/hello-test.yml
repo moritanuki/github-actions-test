@@ -9,7 +9,6 @@ jobs:
   hello_job:
     runs-on: ubuntu-latest
     environment: ${{ github.ref_name == 'main' && 'dev' || github.ref_name }}
-    needs: [approve-deploy]
     steps:
       # ファイルをリポジトリからチェックアウト
       - name: Checkout
