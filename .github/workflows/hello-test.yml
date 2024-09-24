@@ -3,20 +3,12 @@ on:
   push:
     branches:
       - test
-
-  # 手動承認トリガーを使用
-  workflow_dispatch:
-    inputs:
-      approve:
-        description: 'Deploy to production'
-        required: true
-        default: 'yes'
+      - main
 
 jobs:
   hello_job:
     runs-on: ubuntu-latest
     environment: ${{ github.ref_name == 'main' && 'dev' || github.ref_name }}
-    needs: [approve-deploy]
     steps:
       # ファイルをリポジトリからチェックアウト
       - name: Checkout
@@ -27,10 +19,3 @@ jobs:
         run: cat .env
       - name: Hello
         run: echo ${{ vars.HELLO }}
-
-  approve-deploy:
-    if: (github.event.inputs.approve == 'yes' && github.ref_name == 'main') || github.ref_name == 'test'
-    runs-on: ubuntu-latest
-    steps:
-    - name: デプロイ
-      run: echo "${{ github.ref_name == 'main' && 'dev' || github.ref_name }}環境にデプロイしています"
