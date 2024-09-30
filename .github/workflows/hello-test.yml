@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     # environment: ${{ github.ref_name == 'main' && 'dev' || github.ref_name }}
     steps:
+
       # ファイルをリポジトリからチェックアウト
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,10 +30,12 @@ jobs:
       #   run: cat .env
       # - name: Hello
       #   run: echo ${{ vars.HELLO }}
+
       - name: 変更されたディレクトリを取得
         id: find-dirs
         run: |
           MODIFIED_DIRS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} \
+          | grep '/' \
           | cut -d'/' -f1 \
           | sort -u \
           | grep -vE '^(auth-cognito|layer-|split-floormap|\.github)' \
