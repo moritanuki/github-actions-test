@@ -22,6 +22,6 @@ jobs:
       - name: 変更されたディレクトリを取得
         id: find-dirs
         run: |
-          MODIFIED_DIRS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | cut -d'/' -f1 | sort -u | grep -vE '^(layer-|auth-cognito)')
+          MODIFIED_DIRS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | cut -d'/' -f1 | sort -u)
           echo "Modified directories: $MODIFIED_DIRS"
           echo "::set-output name=dirs::${MODIFIED_DIRS}"
