@@ -34,4 +34,5 @@ jobs:
           for dir in ${{ steps.find-dirs.outputs.dirs }}; do
             if [ -f "$dir/README.md" ]; then
               echo "Processing directory $dir"
+            fi
           done
