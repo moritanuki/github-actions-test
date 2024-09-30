@@ -8,17 +8,17 @@ on:
 jobs:
   hello_job:
     runs-on: ubuntu-latest
-    environment: ${{ github.ref_name == 'main' && 'dev' || github.ref_name }}
+    # environment: ${{ github.ref_name == 'main' && 'dev' || github.ref_name }}
     steps:
       # ファイルをリポジトリからチェックアウト
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Set up .env file
-        run: cp .env.${{ github.ref_name == 'main' && 'dev' || github.ref_name }} .env
-      - name: Show .env
-        run: cat .env
-      - name: Hello
-        run: echo ${{ vars.HELLO }}
+      # - name: Set up .env file
+      #   run: cp .env.${{ github.ref_name == 'main' && 'dev' || github.ref_name }} .env
+      # - name: Show .env
+      #   run: cat .env
+      # - name: Hello
+      #   run: echo ${{ vars.HELLO }}
       - name: 変更されたディレクトリを取得
         id: find-dirs
         run: |
