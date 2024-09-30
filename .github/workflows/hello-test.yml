@@ -10,12 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     # environment: ${{ github.ref_name == 'main' && 'dev' || github.ref_name }}
     steps:
-      # Nodejs環境のセットアップ
-      - name: Setup nodejs
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-          cache: "npm"
 
       # ファイルをリポジトリからチェックアウト
       - name: Checkout
@@ -23,12 +17,20 @@ jobs:
         with:
           fetch-depth: 0
 
+      # Nodejs環境のセットアップ
+      - name: Setup nodejs
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: "npm"
+
       # - name: Set up .env file
       #   run: cp .env.${{ github.ref_name == 'main' && 'dev' || github.ref_name }} .env
       # - name: Show .env
       #   run: cat .env
       # - name: Hello
       #   run: echo ${{ vars.HELLO }}
+
       - name: 変更されたディレクトリを取得
         id: find-dirs
         run: |
