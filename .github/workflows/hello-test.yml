@@ -27,3 +27,11 @@ jobs:
           MODIFIED_DIRS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | cut -d'/' -f1 | sort -u | grep -vE '^(layer-|auth-cognito|\.github)')
           echo "Modified directories: $MODIFIED_DIRS"
           echo "::set-output name=dirs::${MODIFIED_DIRS}"
+
+      - name: 変更された各ディレクトリでビルドとデプロイを実行
+        if: steps.find-dirs.outputs.dirs != ''
+        run: |
+          for dir in ${{ steps.find-dirs.outputs.dirs }}; do
+            if [ -f "$dir/README.md" ]; then
+              echo "Processing directory $dir"
+          done
