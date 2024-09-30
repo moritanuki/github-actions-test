@@ -12,7 +12,9 @@ jobs:
     steps:
       # ファイルをリポジトリからチェックアウト
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       # - name: Set up .env file
       #   run: cp .env.${{ github.ref_name == 'main' && 'dev' || github.ref_name }} .env
       # - name: Show .env
@@ -24,4 +26,5 @@ jobs:
         run: |
           MODIFIED_DIRS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | cut -d'/' -f1 | sort -u)
           echo "Modified directories: $MODIFIED_DIRS"
-          echo "::set-output name=dirs::${MODIFIED_DIRS}"
+          echo "dirs=${MODIFIED_DIRS}" >> $GITHUB_OUTPUT
+          echo $GITHUB_OUTPUT
