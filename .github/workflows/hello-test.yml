@@ -38,5 +38,19 @@ jobs:
           for dir in ${{ steps.find-dirs.outputs.dirs }}; do
             if [ -f "$dir/README.md" ]; then
               echo "Processing directory $dir"
+              cd $dir
+              npm install
+              npm run build
+              npm run dist
+              DEPLOY_TARGET=$(head -n 1 README.md | sed 's/^# //')
+              if [ "${{ github.ref }}" == "refs/heads/develop" ]; then
+                DEPLOY_TARGET="tbsa-dev-${DEPLOY_TARGET}"
+                AWS_ROLE="tbsa-dev-lambda-github-role"
+              elif [ "${{ github.ref }}" == "refs/heads/test" ]; then
+                DEPLOY_TARGET="tbsa-test-${DEPLOY_TARGET}"
+                AWS_ROLE="tbsa-test-lambda-github-role"
+              fi
+              echo "Deploying to ${DEPLOY_TARGET} for directory $dir using role ${AWS_ROLE}"
+              cd ..
             fi
           done
