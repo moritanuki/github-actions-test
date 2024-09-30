@@ -10,18 +10,18 @@ jobs:
     runs-on: ubuntu-latest
     # environment: ${{ github.ref_name == 'main' && 'dev' || github.ref_name }}
     steps:
-      # ファイルをリポジトリからチェックアウト
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
       # Nodejs環境のセットアップ
       - name: Setup nodejs
         uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: "npm"
+
+      # ファイルをリポジトリからチェックアウト
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       # - name: Set up .env file
       #   run: cp .env.${{ github.ref_name == 'main' && 'dev' || github.ref_name }} .env
@@ -33,6 +33,7 @@ jobs:
         id: find-dirs
         run: |
           MODIFIED_DIRS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} \
+          | grep '/' \
           | cut -d'/' -f1 \
           | sort -u \
           | grep -vE '^(auth-cognito|layer-|split-floormap|\.github)' \
