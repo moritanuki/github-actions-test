@@ -11,5 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "@types/aws-lambda": "^8.10.145"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0"
   }
 }
