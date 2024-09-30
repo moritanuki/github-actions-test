@@ -24,9 +24,13 @@ jobs:
       - name: 変更されたディレクトリを取得
         id: find-dirs
         run: |
-          MODIFIED_DIRS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | cut -d'/' -f1 | sort -u | grep -vE '^(layer-|auth-cognito|\.github)')
+          MODIFIED_DIRS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} \
+          | cut -d'/' -f1 \
+          | sort -u \
+          | grep -vE '^(layer-|auth-cognito|\.github)' \
+          | tr '\n' ' ')
           echo "Modified directories: $MODIFIED_DIRS"
-          echo "::set-output name=dirs::${MODIFIED_DIRS}"
+          echo "dirs=$MODIFIED_DIRS" >> $GITHUB_OUTPUT
 
       - name: 変更された各ディレクトリでビルドとデプロイを実行
         if: steps.find-dirs.outputs.dirs != ''
