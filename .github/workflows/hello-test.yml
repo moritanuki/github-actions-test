@@ -38,7 +38,7 @@ jobs:
       #     cache: "npm"
 
       - name: environment
-        if: ${{ env.ENV }} == 'dev' || ${{ env.ENV }} == 'test'
+        if: ENV == 'dev' || ENV == 'test'
         run: echo "${ENV}環境です"
 
       # - name: Set up .env file
