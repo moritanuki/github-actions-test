@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ENV: ${{ github.ref_name == 'main' && 'dev' || github.ref_name }}
-    environment: ${ ENV }
+    environment: ${ENV}
     permissions:
       id-token: write
       contents: read
@@ -38,7 +38,7 @@ jobs:
       #     cache: "npm"
 
       - name: environment
-        run: echo ${ ENV }
+        run: echo ${ENV}
 
       # - name: Set up .env file
       #   run: cp .env.${ ENV } .env
