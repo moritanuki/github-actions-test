@@ -51,6 +51,8 @@ jobs:
       - name: 変更されたディレクトリを取得
         id: find-dirs
         run: |
+          echo "before: ${{ github.event.before }}"
+          echo "after: ${{ github.sha }}"
           MODIFIED_DIRS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} \
           | grep '/' \
           | cut -d'/' -f1 \
