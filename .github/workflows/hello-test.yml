@@ -34,7 +34,7 @@ jobs:
       - name: 変更されたディレクトリを取得
         id: find-dirs
         run: |
-          MODIFIED_DIRS=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} \
+          MODIFIED_DIRS=$(git diff --name-only ${{ github.base_ref }} ${{ github.event.pull_req }} \
           | grep '/' \
           | cut -d'/' -f1 \
           | sort -u \
