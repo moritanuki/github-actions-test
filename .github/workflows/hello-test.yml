@@ -38,10 +38,13 @@ jobs:
       #     node-version: 18
       #     cache: "npm"
 
-      - name: Set up .env file
-        run: cp .env.${ ENV } .env
-      - name: Show .env
-        run: cat .env
+      - name: environment
+        run: echo ${ENV}
+
+      # - name: Set up .env file
+      #   run: cp .env.${ ENV } .env
+      # - name: Show .env
+      #   run: cat .env
       - name: Hello
         run: echo ${{ vars.HELLO }}
 
