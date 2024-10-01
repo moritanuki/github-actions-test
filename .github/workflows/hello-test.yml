@@ -25,17 +25,20 @@ jobs:
 
     steps:
       # ファイルをリポジトリからチェックアウト
-      - name: Checkout "${{ github.base_ref }}"
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: ${{ github.base_ref }}
+      # - name: Checkout "${{ github.base_ref }}"
+      #   uses: actions/checkout@v4
+      #   with:
+      #     fetch-depth: 0
+      #     ref: ${{ github.base_ref }}
 
-      - name: Checkout "${{ github.head_ref }}"
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: ${{ github.head_ref }}
+      # - name: Checkout "${{ github.head_ref }}"
+      #   uses: actions/checkout@v4
+      #   with:
+      #     fetch-depth: 0
+      #     ref: ${{ github.head_ref }}
+
+      - uses: dorny/paths-filter@v2
+        id: changes
 
       # Nodejs環境のセットアップ
       - name: Setup nodejs
@@ -58,7 +61,7 @@ jobs:
       - name: 変更されたディレクトリを取得
         id: find-dirs
         run: |
-          MODIFIED_DIRS=$(git diff --name-only ${{ github.base_ref }} \
+          MODIFIED_DIRS=${{ steps.changes.outputs }} \
           | grep '/' \
           | cut -d'/' -f1 \
           | sort -u \
