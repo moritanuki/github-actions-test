@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ENV: ${{ github.ref_name == 'main' && 'dev' || github.ref_name }}
-    environment: ${{ env.ENV }}
+    environment: ${{ github.ref_name == 'main' && 'dev' || github.ref_name }}
     needs: [approve-deploy]
     permissions:
       id-token: write
