@@ -19,17 +19,16 @@ jobs:
     env:
       ENV: ${{ github.ref_name == 'main' && 'dev' || github.ref_name }}
     environment: ${{ github.ref_name == 'main' && 'dev' || github.ref_name }}
-    needs: [approve-deploy]
     permissions:
       id-token: write
       contents: read
 
     steps:
       # ファイルをリポジトリからチェックアウト
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      # - name: Checkout
+      #   uses: actions/checkout@v4
+      #   with:
+      #     fetch-depth: 0
 
       # Nodejs環境のセットアップ
       # - name: Setup nodejs
