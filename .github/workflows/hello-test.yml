@@ -39,6 +39,8 @@ jobs:
 
       - uses: dorny/paths-filter@v2
         id: changes
+        with:
+          filters: "*"
 
       # Nodejs環境のセットアップ
       - name: Setup nodejs
