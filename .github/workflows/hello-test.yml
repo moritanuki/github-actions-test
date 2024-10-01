@@ -18,6 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ENV: ${{ github.ref_name == 'main' && 'dev' || github.ref_name }}
+      GITHUB_EVENT_BEFORE: ${{ github.event.before }}
     environment: ${ENV}
     permissions:
       id-token: write
@@ -51,9 +52,15 @@ jobs:
       - name: 変更されたディレクトリを取得
         id: find-dirs
         run: |
-          echo "before: origin/${{ github.event.pull_request.base.ref }}"
+          echo "before: $GITHUB_EVENT_BEFORE"
           echo "after: ${{ github.sha }}"
-          MODIFIED_DIRS=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }} ${{ github.sha }} \
+          if [ -z "$GITHUB_EVENT_BEFORE" ]; then
+            PREV_SHA=$(git rev-parse HEAD~1)
+          else
+            PREV_SHA="$GITHUB_EVENT_BEFORE"
+          fi
+          echo "Using PREV_SHA: $PREV_SHA"
+          MODIFIED_DIRS=$(git diff --name-only $PREV_SHA ${{ github.sha }} \
           | grep '/' \
           | cut -d'/' -f1 \
           | sort -u \
