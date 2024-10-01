@@ -25,61 +25,54 @@ jobs:
 
     steps:
       # ファイルをリポジトリからチェックアウト
-      # - name: Checkout
-      #   uses: actions/checkout@v4
-      #   with:
-      #     fetch-depth: 0
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       # Nodejs環境のセットアップ
-      # - name: Setup nodejs
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version: 18
-      #     cache: "npm"
+      - name: Setup nodejs
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: "npm"
 
-      - name: environment
-        if: env.ENV == 'dev' || env.ENV == 'test'
-        run: echo "${ENV}環境です"
+      # - name: environment
+      #   if: env.ENV == 'dev' || env.ENV == 'test'
+      #   run: echo "${ENV}環境です"
 
       # - name: Set up .env file
       #   run: cp .env.${ ENV } .env
       # - name: Show .env
       #   run: cat .env
-      - name: Hello
-        run: echo ${{ vars.HELLO }}
+      # - name: Hello
+      #   run: echo ${{ vars.HELLO }}
 
-      # - name: 変更されたディレクトリを取得
-      #   id: find-dirs
-      #   run: |
-      #     MODIFIED_DIRS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} \
-      #     | grep '/' \
-      #     | cut -d'/' -f1 \
-      #     | sort -u \
-      #     | grep -vE '^(\.github)' \
-      #     | tr '\n' ' ')
-      #     echo "Modified directories: $MODIFIED_DIRS"
-      #     echo "dirs=$MODIFIED_DIRS" >> $GITHUB_OUTPUT
+      - name: 変更されたディレクトリを取得
+        id: find-dirs
+        run: |
+          MODIFIED_DIRS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} \
+          | grep '/' \
+          | cut -d'/' -f1 \
+          | sort -u \
+          | grep -vE '^(\.github)' \
+          | tr '\n' ' ')
+          echo "Modified directories: $MODIFIED_DIRS"
+          echo "dirs=$MODIFIED_DIRS" >> $GITHUB_OUTPUT
 
-      # - name: 変更された各ディレクトリでビルドとデプロイを実行
-      #   if: steps.find-dirs.outputs.dirs != ''
-      #   run: |
-      #     for dir in ${{ steps.find-dirs.outputs.dirs }}; do
-      #       if [ -f "$dir/README.md" ]; then
-      #         echo "Processing directory $dir"
-      #         cd $dir
-      #         npm install
-      #         npm run build
-      #         npm run dist
-      #         DEPLOY_TARGET=$(head -n 1 README.md | sed 's/^# //')
-      #         if [ "${{ github.ref }}" == "refs/heads/develop" ]; then
-      #           DEPLOY_TARGET="tbsa-dev-${DEPLOY_TARGET}"
-      #           AWS_ROLE="tbsa-dev-lambda-github-role"
-      #         elif [ "${{ github.ref }}" == "refs/heads/test" ]; then
-      #           DEPLOY_TARGET="tbsa-test-${DEPLOY_TARGET}"
-      #           AWS_ROLE="tbsa-test-lambda-github-role"
-      #         fi
-      #         echo "Deploying to ${DEPLOY_TARGET} for directory $dir using role ${AWS_ROLE}"
-      #         ls ./dist
-      #         cd ..
-      #       fi
-      #     done
+      - name: 変更された各ディレクトリでビルドとデプロイを実行
+        if: steps.find-dirs.outputs.dirs != ''
+        run: |
+          for dir in ${{ steps.find-dirs.outputs.dirs }}; do
+            if [ -f "$dir/README.md" ]; then
+              echo "Processing directory $dir"
+              cd $dir
+              npm install
+              npm run build
+              npm run dist
+              DEPLOY_TARGET=$(head -n 1 README.md | sed 's/^# //')
+              DEPLOY_TARGET="hello-${ENV}-${DEPLOY_TARGET}"
+              echo "Deploying to ${DEPLOY_TARGET} for directory $dir
+              cd ..
+            fi
+          done
