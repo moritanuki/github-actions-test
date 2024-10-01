@@ -72,7 +72,7 @@ jobs:
               npm run dist
               DEPLOY_TARGET=$(head -n 1 README.md | sed 's/^# //')
               DEPLOY_TARGET="hello-${ENV}-${DEPLOY_TARGET}"
-              echo "Deploying to ${DEPLOY_TARGET} for directory $dir
+              echo "Deploying to ${DEPLOY_TARGET} for directory $dir"
               cd ..
             fi
           done
