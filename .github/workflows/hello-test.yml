@@ -51,9 +51,9 @@ jobs:
       - name: 変更されたディレクトリを取得
         id: find-dirs
         run: |
-          echo "before: ${{ github.event.before }}"
+          echo "before: origin/${{ github.event.pull_request.base.ref }}"
           echo "after: ${{ github.sha }}"
-          MODIFIED_DIRS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} \
+          MODIFIED_DIRS=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }} ${{ github.sha }} \
           | grep '/' \
           | cut -d'/' -f1 \
           | sort -u \
