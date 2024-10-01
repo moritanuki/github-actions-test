@@ -3,7 +3,15 @@ on:
   push:
     branches:
       - test
-      - main
+    paths-ignore:
+      - 'auth-cognito/**'
+      - 'layer-*/**'
+  workflow_dispatch:
+    inputs:
+      approve:
+        description: "Deploy to production"
+        required: true
+        default: "yes"
 
 jobs:
   hello_job:
@@ -38,7 +46,7 @@ jobs:
           | grep '/' \
           | cut -d'/' -f1 \
           | sort -u \
-          | grep -vE '^(auth-cognito|layer-|split-floormap|\.github)' \
+          | grep -vE '^(\.github)' \
           | tr '\n' ' ')
           echo "Modified directories: $MODIFIED_DIRS"
           echo "dirs=$MODIFIED_DIRS" >> $GITHUB_OUTPUT
